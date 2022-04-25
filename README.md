@@ -12,9 +12,16 @@ These all require people to align their target situation with some source knowle
 The experiments for this research can be viewed here:
 
 https://davidlandy.net/forage/02/exp.html
+
 https://davidlandy.net/AnalogyStrings/Matchmaker/analogystrings02_exp.html
+
 https://davidlandy.net/AnalogyStrings/NumeralNumeral/exp.html
+
 https://davidlandy.net/AnalogyStrings/LetterNumeral/exp.html
+
 https://davidlandy.net/AnalogyStrings/TerrainNumeral/exp.html
+
 https://davidlandy.net/darkroom/01/exp.html
-https://davidlandy.net/darkroom/03/exp.html# SurrogateThinking
+
+https://davidlandy.net/darkroom/03/exp.html
+
