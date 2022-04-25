@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>research study</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="jspsych/jspsych.js"></script>
+    <script src="jspsych/plugin-instructions.js"></script>
+    <script src="jspsych/plugin-singlestim-multiresponse-slider.js"></script>
+    <link href="jspsych/jspsych.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body></body>
+  <script>
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* DEFINE DATA FILE SAVE NAME */
+    var expName = "Rel_Match_Ter_Ter";
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* DEFINE STIMULI AND INSTRUCTION CONTENT */
+
+    const jsPsych = initJsPsych();
+    var transitionDelay = 300;
+    var turkSubmitCode = 42 * 42;
+    var nConditions = 1
+    var condition = Math.round(Math.random()*(nConditions-1))+1;
+    var studyTopic = "language and thinking";
+    var studyPurpose =
+      "to better understand how people make predictions during conversations";
+    var recruitmentPlatform = "Amazon Mechanical Turk"
+    var taskDescription = "answer questions requiring number or word responses";
+    var taskTime = "about 5-10 minutes"; //a time or a range
+    var basePay = "$1"
+    var bonusPay = "If you perform well you will recieve a bonus payment of $1."
+      "the compensation offered in the Amazon Mechanical Turk listing";
+    var debriefDescription =
+      "This task is investigating how people reason using relational patterns to make predictions."; //Full sentence
+
+    var taskOptions =  ['img/choice_A.png','img/choice_B.png','img/choice_C.png'];
+    var sliderStart = "10";
+    var studyName = "Pattern Strings E: Terrain-Terrain";
+    var stimType1 = "three terrain texture images";
+    var stimType2 = "three terrain texture images";
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* DEFINE CONTACT INFO */
+
+    var contactLandy =
+     "<p><i>Dr. David Landy, Assistant Professor<br>" +
+      "Department of Psychological and Brain Sciences, Indiana University<br>" +
+      "1101 East 10th Street, Bloomington, IN 47405<br>" +
+      "(812) 336-4449 <br>" +
+      "dlandy at indiana dot edu</i></p>";
+
+    var contactGoldstone =
+      "<p><i>Dr. Rob Goldstone <br>" +
+      "Department of Psychological and Brain Sciences, Indiana University<br>" +
+      "1101 East 10th Street, Bloomington, IN 47405<br>" +
+      "(812) 855-4853 <br>" +
+      "rgoldsto at indiana dot edu</i></p>";
+
+    var contactTodd =
+     "<p><i>Dr. Peter Todd <br>" +
+      "Department of Psychological and Brain Sciences, Indiana University<br>" +
+      "1101 East 10th Street, Bloomington, IN 47405<br>" +
+      "(812) 855-3914 <br>" +
+      "abcwest dot iu+mt at gmail dot com</i></p>";
+
+    var contactInvestigator = contactTodd;
+    var investigatorName = "Dr. Peter Todd";
+    var departmentName = "Department of Psychological and Brain Sciences";
+    var institutionName = "Indiana University";
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* DEFINE NAVIGATION PROMPTS */
+    var buttonAdvance =
+      "Make your response and click the <i>SUBMIT ANSWERS</i> button to continue.";
+    var noBrowserControl =
+      "<i>Note: Browser controls will not work during this task. Clicking BACKWARD or REFRESH in the browser controls will <u>reset the entire task</u>.</i>";
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* DEFINE STUDY SHELL */
+    var invitation = [
+      "You are invited to participate in a research study on" + 
+        studyTopic+ 
+        ", conducted by " +
+        investigatorName +
+        " in the " +
+        departmentName +
+        ". You have been recruited to participate through "+
+        recruitmentPlatform +
+        ". Please read the following form before agreeing to be in the study. <br><br><br>" +
+        noBrowserControl +
+        "<br><br>"
+    ];
+
+    var consentForms = {
+      landy: [
+        '<div id="consent" style="text-align:left">' +
+          '<p class="lead_right">IRB Study # 1511805816</p>' +
+          "<b>INDIANA UNIVERSITY STUDY INFORMATION SHEET</b><br>" +
+          "<b>Prediction During Communication</b><br><br>" +
+          "You are invited to participate in a research study on conversation, conducted by Dr. David Landy in the Department of Psychological and Brain Sciences. You have been recruited to participate through Amazon Mechanical Turk (mturk.com). Please read this form and ask any questions before agreeing to be in the study. <br><br>" +
+          "<b>STUDY PURPOSE: </b><br>" +
+          "The purpose of this study is to better understand how people make predictions during conversations.<br><br>" +
+          "<b>NUMBER OF PEOPLE TAKING PART IN THE STUDY:</b><br>" +
+          "If you agree to participate, you will be one of approximately 6000 subjects who will be participating in this research.<br><br>" +
+          "<b>PROCEDURES FOR THE STUDY:</b><br>" +
+          "If you agree to be in the study, you will be presented with several straightforward tasks to complete while seated at your computer. These tasks include making judgments about different objects and topics, watching brief videos, and reading and entering text information. The entire session should take a maximum of 5, 10, 15, 30, 45, or 60 minutes, as indicated in the HIT description. You may only participate in the study once.<br><br>" +
+          "<b>RISKS OF TAKING PART IN THE STUDY:</b><br>" +
+          "Participation in this study involves a potential risk of loss of confidentiality. <br><br>" +
+          "<b>BENEFITS OF TAKING PART IN THE STUDY:</b><br>" +
+          "An understanding of how people make predictions during conversation can help us understand how to improve communication. You benefit from this experience because you learn something about how an experiment is designed and conducted and what issues are of interest to cognitive scientists <br><br>" +
+          "<b>ALTERNATIVES TO TAKING PART IN THE STUDY:</b><br>" +
+          "An alternative to participating in the study is to choose not to participate. <br><br>" +
+          "<b>PAYMENT:</b><br>" +
+          "For participating in this study, you will receive a small payment, equivalent to approximately $8/hour. If this is a 5-minute study, as indicated in the HIT description, you will receive $0.67. If this is a 10-minute study, you will receive $1.33. If this is a 15-minute study, you will receive $2. If this is a 30-minute study, you will receive $4. If this is a 60-minute study, you will receive $8. <br><br>" +
+          "<b>CONTACTS FOR QUESTIONS OR PROBLEMS:</b><br>" +
+          "For questions about the study, contact the researcher Dr. David Landy at (812) 336-4449.  <br><br>" +
+          "For questions about your rights as a research participant or to discuss problems, complaints or concerns about a research study, or to obtain information, or offer input, contact the IU Human Subjects Office: (812) 856-4242 or irb@iu.edu <br><br>" +
+          "<b>VOLUNTARY NATURE OF STUDY:</b><br>" +
+          "Taking part in this study is voluntary.  You may choose not to take part or may leave the study at any time.  Leaving the study will not result in any penalty or loss of benefits to which you are entitled and you will be compensated for your time up to that point.  Your decision whether or not to participate in this study will not affect your current or future relations with the investigator(s).<br><br>" +
+          "<b>Thank you for agreeing to participate in our research.  Before you begin, please note that the data you provide may be collected and used by Amazon as per its privacy agreement.  Additionally, this research is for residents of the United States over the age of 18*; if you are not a resident of the United States and/or under the age of 18, please do not complete this survey.</b><br><br>" +
+          "Print this page if you want a copy for your records.<br><br>" +
+          "Form date: November 19, 2015 <br><br>" +
+          "</div>",
+      ],
+      todd: [
+        '<div id="consent" style="text-align:left">' +
+          '<p class="lead_right">IRB Study # 1304011099</p>' +
+          "<b>INDIANA UNIVERSITY STUDY INFORMATION SHEET</b><br>" +
+          "<b>Concepts, judgements, and attitudes</b><br>" +
+          "This study is being conducted by the Adaptive Behavior and Cognition (ABC-West) Laboratory in the Cognitive Science Program at Indiana University. We study how people think and make decisions in adaptively important settings they encounter. <br><br>" +
+          "<b>What's involved? </b><br>" +
+          "If you agree to be in this study, you will be presented with some straightforward tasks to complete while seated at your computer. These tasks will include answering questions about your concepts and attitudes, viewing a variety of items, making judgments about those items, and reading and entering text information.<br><br>" +
+          "<b>NUMBER OF PEOPLE TAKING PART IN THE STUDY:</b><br>" +
+          "If you agree to participate, you will be one of approximately 6000 subjects who will be participating in this research.<br><br>" +
+          "To complete this HIT, you will do the following steps: <br>" +
+          "1. Complete a series of tasks at our research website.<br>" +
+          "2. Submit the HIT.<br>" +
+          "3. Receive payment after we review your work and approve the HIT.<br><br>" +
+          "You will have 60 minutes to complete this HIT which is intended to require "+
+          taskTime 
+          +" of dedicated time. For participating in this study, you will receive a small payment of "+
+          basePay
+          +". "+
+          " No personal identifying information will be collected. <br><br>" +
+          "If you have any questions, contact the researchers at abcwest.iu+mt@gmail.com<br>" +
+          "<small>Form date: April 2, 2013 </small><br><br>" +
+          "</div>",
+      ],
+    };
+
+    const consentForm = consentForms.todd;
+    var consentVoluntary = [
+      "<p><b>STATEMENT OF CONSENT</b></p>" +
+        "<p>Taking part in this study is voluntary. You may choose not to take part or may leave the study at any time. You may withdraw by closing your web browser.</p>"+
+        "<p>You may only participate in this exact study (<b>"+ studyName +"</b>) one time. You may take other versions of this experiment listed under different names. You will not be compensated for multiple takes of this experiment. If you are accidentally repeated this HIT you may enter 'Repeat' for the HIT Code to close it out.</p>",
+    ];
+
+    var debrief = [
+        "<p><b>THANK YOU</b><br>" +
+        "Thank you for participating in our study. " +
+        debriefDescription +
+        " If you have questions concerning this study you may contact the lead investigator:<br><br>" +
+        contactInvestigator + "<br><br>" +
+        "<i>Press any key to receive the HIT code.</i></p>",
+    ];
+
+    var secretCode = [
+      "Please enter the code: <b>" +
+        turkSubmitCode +
+        "</b> in Mechanical Turk to complete this HIT.",
+    ];
+
+    var closeBrowser = [
+      "This task is complete. You may now close this browser.",
+    ];
+
+    var repeatSubject = [
+      "<b>Qualification Error</b><br>" +
+        "For statistical purposes, tasks for this study requires unique participants. It appears that you have already participated in a task for this study."+
+        "<p><i>Please enter 'Repeat007' for the HIT code.</i></p>",
+    ];
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // /* DEFINE SAVE METHOD */
+    function saveData(filename, filedata){
+                          $.ajax({
+                                type:'post',
+                                cache: false,
+                                url: 'save_data.php', // this is the path to the above PHP script
+                                data: {filename: filename, filedata: filedata}
+                          });
+    }
+    
+    var turkInfo = jsPsych.turk.turkInfo();
+    var mTurkID
+    console.log("turk info:",turkInfo)
+    if (turkInfo.workerId === ""){
+      mTurkID = "testID_01"
+    } else {
+      mTurkID =  turkInfo.workerId;
+    };  
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* IMPLEMENT INSTRUCTIONS FOR PRE TEST AND STIMULI */
+
+    var instructionText1 =
+      "Pairs of symbol strings were generated according to some simple rules. The top string consists only of "+ stimType2+" AND may have been generated at random or by a pattern. The bottom string consists only of "+ stimType1+" AND may have been generated based on a relationship to the top string or not. So any apparent patterns may be real or may just be a coincidence. <br><br> Your will look at several pairs of strings that have some randomly hidden symbols. Your task is to determine the symbol that best fits the target which is indicated by a (?) question mark and to estimate the probability that your prediction matches the true symbol of the target. Once you have made your responses, click the <i>SUBMIT ANSWERS</i> button to continue.</p>";
+    var stimPreambleText1 =
+      "Look at the two sets of strings below with randomly hidden symbols. Your task is to determine the symbol that best fits the target which is indicated by a (?) question mark and to estimate the probability that your selection matches the true symbol of the target.<br><br>";
+    var radioPreambleText1 = "Select the symbol that best fits the (?) target:";
+    var sliderPreambleText1 =
+      "Estimate the probability that your prediction matches the true symbol of the target (0% to 100%):";
+
+    var instr1 = ["<b>INSTRUCTIONS</b><br>" + instructionText1];
+
+    var stimPreamble1 = [stimPreambleText1];
+
+    var radioPreamble1 = ["<br>" + radioPreambleText1 + " " + "<br>"];
+
+    var sliderPreamble1 = ["<br>" + sliderPreambleText1 + " " + "<br><br>"];
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* IMPLEMENT EXPERIMENT DESIGN TO CONSTRUCT STIMULI */
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* DEFINE BLOCK 1 QUESTIONS */
+    var test1_stims = [
+              {stimulus: "img/01.png"},
+              {stimulus: "img/02.png"},
+              {stimulus: "img/03.png"},
+              {stimulus: "img/04.png"},
+              {stimulus: "img/05.png"},
+              {stimulus: "img/06.png"},
+              {stimulus: "img/07.png"},
+              {stimulus: "img/08.png"},
+              {stimulus: "img/09.png"},
+              {stimulus: "img/10.png"},
+              {stimulus: "img/11.png"},
+              {stimulus: "img/12.png"},
+              {stimulus: "img/13.png"},
+              {stimulus: "img/14.png"},
+              {stimulus: "img/15.png"},
+              {stimulus: "img/16.png"},
+              {stimulus: "img/17.png"},
+              {stimulus: "img/18.png"},
+            ];
+            
+
+     ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* DEFINE JSPSYCH BLOCKS */
+
+    var invitation_block = {
+      type: jsPsychInstructions,
+      pages: [invitation],
+      show_clickable_nav: true,
+      allow_backward: false,
+      timing_post_trial: transitionDelay,
+    };
+
+    var consent_block = {
+      type: jsPsychInstructions,
+      pages: [consentForm, consentVoluntary],
+      show_clickable_nav: true,
+      allow_backward: false,
+      timing_post_trial: transitionDelay,
+    };
+
+    var instructions_block = {
+      type: jsPsychInstructions,
+      pages: [instr1],
+      show_clickable_nav: true,
+      //allow_backward: false,
+      timing_post_trial: transitionDelay,
+    };
+
+    var test = {
+      type: jsPsychSinglestimMultichoiceSlider,
+      stimulus: jsPsych.timelineVariable("stimulus"),
+      options: taskOptions,
+      preamble: stimPreamble1,
+      require_movement: true,
+      timing_post_trial: transitionDelay,
+      radio_prompt: radioPreamble1,
+      slider_prompt: sliderPreamble1,
+      on_finish: function (data) {},
+      randomize_order: true,
+      image_response: true,
+      slider_start: sliderStart,
+    };
+
+    var test_block = {
+      timeline: [test],
+      timeline_variables: test1_stims,
+      randomize_order: true
+    }
+    
+    var debrief_block = {
+      type: jsPsychInstructions,
+      pages: [debrief],
+      show_clickable_nav: true,
+      allow_backward: false,
+      timing_post_trial: transitionDelay,
+      on_finish: function (data) {
+        var time_foo = new Date();
+        var experiment_time = time_foo.getTime();
+        jsPsych.data.addProperties({ turkID: mTurkID });
+        jsPsych.data.addProperties({ ExpEndTime: experiment_time });
+        saveData(expName + '_ID' + mTurkID + '_T' + experiment_time + '.csv', jsPsych.data.get().csv());
+        }
+    };
+    
+    var hitCode_block = {
+      type: jsPsychInstructions,
+      pages: [secretCode],
+      show_clickable_nav: true,
+      allow_backward: false,
+      timing_post_trial: transitionDelay,
+    };
+
+    var closeBrowser_block = {
+        type: jsPsychInstructions,
+        pages: [closeBrowser],
+        show_clickable_nav: false
+    }
+
+    var repeatSubject_block = {
+      type: jsPsychInstructions,
+      pages: [repeatSubject],
+      show_clickable_nav: true,
+      allow_backward: false,
+      timing_post_trial: transitionDelay,
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* CHECK REPEAT SUBJECT*/
+
+    var uniqueSubject = true;
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* DEFINE EXPERIMENT TIMELINE */
+    var timeline = [];
+    timeline.push(invitation_block);
+    if (uniqueSubject) {
+      timeline.push(consent_block);
+      timeline.push(instructions_block);
+      timeline.push(test_block);
+      timeline.push(debrief_block);
+      timeline.push(hitCode_block);
+      timeline.push(closeBrowser_block)
+    } else {
+      timeline.push(repeatSubject_block);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* START EXPERIMENT*/
+    jsPsych.run(timeline)
+  </script>
+</html>

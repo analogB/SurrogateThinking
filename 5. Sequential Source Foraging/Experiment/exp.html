@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Research Study</title>
+    <script src="jspsych/jspsych.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="jspsych/rogers-perlin.js"></script>
+    <script src="jspsych/plugin-instructions.js"></script>
+    <script src="jspsych/rogers-forage-surrogate-single.js"></script>
+    <script src="jspsych/plugin-survey-likert.js"></script>
+    <link href="jspsych/jspsych.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body></body>
+  <script>
+    const jsPsych = initJsPsych();
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* DEFINE DATA FILE SAVE NAME */
+    var expName = "foragesurrogate-single-01-";
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* DEFINE STIMULI AND INSTRUCTION CONTENT */
+
+    var nTrials1 = 6;
+    var mapRate = 0.47;
+    var forceFirstTrue = true;
+    var maxTrans = 0;
+    var pDec = 2000;
+    var sDec = 1000;
+    var digDec = 10000;
+    var noDigDec = 1000;
+    var reward = 20000; //200000;
+    var currency = "$";
+
+    var indention = 25;
+    var explDelay = 2500;
+    var explDelayMap = 1000;
+    var mapDir = 5;
+    var transitionDelay = 100;
+    var turkSubmitCode = 42 * 42;
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* DEFINE TEXT CONTENT */
+
+    function numberWithCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    function indenter(nSpaces) {
+      var out = [];
+      for (i = 0; i < nSpaces; i++) {
+        out += "&nbsp;";
+      }
+      return out;
+    }
+
+    var indent = indenter(indention);
+
+    var studyTopic = "conversation and thinking";
+    var studyPurpose =
+      "to better understand how people make predictions and become confident";
+    var taskDescription = "make predictions about uncertain patterns";
+    var debriefDescription =
+      "This study is investigating how people's judgements, predictions, and choices are influenced by correspondences in structure and hidden information. The investigators will compare participant responses to statistical traits of the stimuli to better understand the role of chance and probability in human judgements.";
+
+    var contactLandy =
+      indent +
+      "<i>Dr. David Landy, Assistant Professor<br>" +
+      indent +
+      "Department of Psychological and Brain Sciences, Indiana University<br>" +
+      indent +
+      "1101 East 10th Street, Bloomington, IN 47405<br>" +
+      indent +
+      "(812) 336-4449 <br>" +
+      indent +
+      "dlandy at indiana dot edu</i></p>";
+
+    var contactGoldstone =
+      indent +
+      "<i>Dr. Rob Goldstone <br>" +
+      indent +
+      "Department of Psychological and Brain Sciences, Indiana University<br>" +
+      indent +
+      "1101 East 10th Street, Bloomington, IN 47405<br>" +
+      indent +
+      "(812) 855-4853 <br>" +
+      indent +
+      "rgoldsto at indiana dot edu</i></p>";
+
+    var contactInvestigator = contactLandy;
+
+    var investigatorName = "Dr. David Landy";
+    var departmentName = "Department of Psychological and Brain Sciences";
+    var institutionName = "Indiana University";
+
+    var keyAdvance = "<p><i>Press the spacebar to advance.</i></p>";
+    var buttonAdvance =
+      "Make your response and click the <i>SUBMIT ANSWERS</i> button to continue.";
+    var noBrowserControl =
+      "<i>Note: Browser controls will not work during this task. Clicking BACKWARD or REFRESH in the browser controls will <u>reset the entire task</u>.</i>";
+
+    var invitation = [
+      "<div style='text-align:left'>You are invited to participate in a research study on " +
+        studyTopic +
+        ", conducted by " +
+        investigatorName +
+        " in the " +
+        departmentName +
+        " at " +
+        institutionName +
+        ". Please read the following form and ask any questions before agreeing to be in the study.<br><br>" +
+        noBrowserControl +
+        "<br><br></div>",
+    ];
+
+    var consentForms =     {
+    landy:[
+      '<div id="consent" style="text-align:left">' +
+        '<p class="lead_right">IRB Study # 1511805816</p>' +
+        "<b>INDIANA UNIVERSITY STUDY INFORMATION SHEET</b><br>" +
+        "<b>Prediction During Communication</b><br><br>" +
+        "You are invited to participate in a research study on conversation, conducted by Dr. David Landy in the Department of Psychological and Brain Sciences. You have been recruited to participate through Amazon Mechanical Turk (mturk.com). Please read this form and ask any questions before agreeing to be in the study. <br><br>" +
+        "<b>STUDY PURPOSE: </b><br>" +
+        "The purpose of this study is to better understand how people make predictions during conversations.<br><br>" +
+        "<b>NUMBER OF PEOPLE TAKING PART IN THE STUDY:</b><br>" +
+        "If you agree to participate, you will be one of approximately 6000 subjects who will be participating in this research.<br><br>" +
+        "<b>PROCEDURES FOR THE STUDY:</b><br>" +
+        "If you agree to be in the study, you will be presented with several straightforward tasks to complete while seated at your computer. These tasks include making judgments about different objects and topics, watching brief videos, and reading and entering text information. The entire session should take a maximum of 5, 10, 15, 30, 45, or 60 minutes, as indicated in the HIT description. You may only participate in the study once.<br><br>" +
+        "<b>RISKS OF TAKING PART IN THE STUDY:</b><br>" +
+        "Participation in this study involves a potential risk of loss of confidentiality. <br><br>" +
+        "<b>BENEFITS OF TAKING PART IN THE STUDY:</b><br>" +
+        "An understanding of how people make predictions during conversation can help us understand how to improve communication. You benefit from this experience because you learn something about how an experiment is designed and conducted and what issues are of interest to cognitive scientists <br><br>" +
+        "<b>ALTERNATIVES TO TAKING PART IN THE STUDY:</b><br>" +
+        "An alternative to participating in the study is to choose not to participate. <br><br>" +
+        "<b>PAYMENT:</b><br>" +
+        "For participating in this study, you will receive a small payment, equivalent to approximately $8/hour. If this is a 5-minute study, as indicated in the HIT description, you will receive $0.67. If this is a 10-minute study, you will receive $1.33. If this is a 15-minute study, you will receive $2. If this is a 30-minute study, you will receive $4. If this is a 60-minute study, you will receive $8. <br><br>" +
+        "<b>CONTACTS FOR QUESTIONS OR PROBLEMS:</b><br>" +
+        "For questions about the study, contact the researcher Dr. David Landy at (812) 336-4449.  <br><br>" +
+        "For questions about your rights as a research participant or to discuss problems, complaints or concerns about a research study, or to obtain information, or offer input, contact the IU Human Subjects Office: (812) 856-4242 or irb@iu.edu <br><br>" +
+        "<b>VOLUNTARY NATURE OF STUDY:</b><br>" +
+        "Taking part in this study is voluntary.  You may choose not to take part or may leave the study at any time.  Leaving the study will not result in any penalty or loss of benefits to which you are entitled and you will be compensated for your time up to that point.  Your decision whether or not to participate in this study will not affect your current or future relations with the investigator(s).<br><br>" +
+        "<b>Thank you for agreeing to participate in our research.  Before you begin, please note that the data you provide may be collected and used by Amazon as per its privacy agreement.  Additionally, this research is for residents of the United States over the age of 18*; if you are not a resident of the United States and/or under the age of 18, please do not complete this survey.</b><br><br>" +
+        "Print this page if you want a copy for your records.<br><br>" +
+        "Form date: November 19, 2015 <br><br>" +
+        "</div>",
+    ],
+    todd:
+    [
+        '<div id="consent" style="text-align:left">' +
+          '<p class="lead_right">IRB Study # 1304011099</p>' +
+          "<b>INDIANA UNIVERSITY STUDY INFORMATION SHEET</b><br>" +
+          "<b>Concepts, judgements, and attitudes</b><br>" +
+          "This study is being conducted by the Adaptive Behavior and Cognition (ABC-West) Laboratory in the Cognitive Science Program at Indiana University. We study how people think and make decisions in adaptively important settings they encounter. <br><br>" +
+          "<b>What's involved? </b><br>" +
+          "If you agree to be in this study, you will be presented with some straightforward tasks to complete while seated at your computer. These tasks will include answering questions about your concepts and attitudes, viewing a variety of items, making judgments about those items, and reading and entering text information.<br><br>" +
+          "<b>NUMBER OF PEOPLE TAKING PART IN THE STUDY:</b><br>" +
+          "If you agree to participate, you will be one of approximately 6000 subjects who will be participating in this research.<br><br>" +
+          "To complete this HIT, you will do the following steps: <br>" +
+          "1. Complete a series of tasks at our research website.<br>" +
+          "2. Submit the HIT.<br>" +
+          "3. Receive payment after we review your work and approve the HIT.<br><br>" +
+          "You will have 60 minutes to complete this HIT which is intended to require less than 15 minutes of dedicated time. For participating in this study, you will receive a small payment of $2. If you perform well you will recieve a bonus of $1. No personal identifying information will be collected. <br><br>" + 
+          "Taking part in this study is voluntary.  You may choose not to take part or may leave the study at any time. <br>" +
+          "If you have any questions, contact the researchers at abcwest.iu+mt@gmail.com<br>"+
+          "Form date: April 2, 2013 <br><br>" +
+          "</div>",
+      ]
+    };
+
+    const consentForm = consentForms.todd
+
+    var consentVoluntary = [
+      "<p><b>VOLUNTARY NATURE OF STUDY</b></p>" +
+        "<p>Taking part in this study is voluntary. You may choose not to take part or may leave the study at any time.<br> You may withdraw by closing your web browser.</p><br><br>",
+    ];
+
+    var debrief = [
+      "<div style='text-align:left'>" +
+        "<b>THANK YOU</b><br>" +
+        "Thank you for participating in our study. " +
+        debriefDescription +
+        " If you have questions concerning this study you may contact the lead investigator:<br><br>" +
+        contactInvestigator +
+        "<p><i><b><br>ADVANCE TO FINALIZE YOUR RESPONSES AND RECEIVE YOUR HIT CODE.</b></i></p><br><br><br></div>",
+    ];
+    // "<p><i>Press any key to receive the HIT code.</i></p>"];
+
+    var secretCode = [
+      "Please enter the code: <b>" +
+        turkSubmitCode +
+        "</b> in Mechanical Turk to complete this HIT." +
+        "<p><i>You may now close this browser window.</i></p>",
+    ];
+
+    var finalText = [
+      "<p><i>Thank you for participating in our study! Your responses have been recorded and you will receive credit within a couple of days. You may now close your browser window.</i></p>",
+    ];
+
+    var repeatSubject = [
+      "<b>Qualification Error</b><br>" +
+        "For statistical purposes, tasks for this study require unique participants. It appears that you have already participated in a task for this study. If you have questions concerning this study you may contact the lead investigator:<br>" +
+        contactInvestigator +
+        '<p><i>Please enter "Repeat007" for the HIT code.</i></p>',
+    ];
+
+    var instr1 = [
+      "<b>Welcome to </b><br>" +
+        //"ALIEN PROSPECTOR</b><br><br>"+
+        "<table align='center'><img height='40px' src='img/sprite/aptitle.png'></img></tr><tr><td><img height='100px' src='img/sprite/merchant1.png'></img></td><td><img height='100px' src='img/sprite/bank.png'></img></td><td><img height='120px' src='img/sprite/ufo.png'></img></td><td><img height='100px' src='img/sprite/treasurebig.png'></img></td><td><img height='100px' src='img/sprite/shovel.png'></img></td><td><img height='100px' src='img/sprite/balloon.png'></img></td></tr><tr><td></img></td></table><br><br>" +
+        "In this game you will visit a series of planets.<br>" +
+        "At each planet you will receive an alien map indicating where buried treasure may be located. <br>" +
+        "You will make exploration decisions that will help you decide whether or not the map is any good.<br>" +
+        "If the map is good and you uncover the treasure you will be generously rewarded intergalactic money <b> " +
+        currency +
+        numberWithCommas(reward) +
+        "</b><br>" +
+        "But if the map is wrong, nothing can be gained and you should move on to another planet. <br><br>",
+    ];
+    var instr2 = [
+      "Another thing: it takes money to make money.<br>" +
+        "So every action you take will decrease your money.<br>" +
+        "It's actually quite difficult to make a profit, <br>and you will need to carefully balance your exploration decisions.<br>" +
+        "<br><br>There are two <b>EXPLORE</b> actions you can take:<br><br>" +
+        "<table align='center'><tr><td><img height='80px' src='img/sprite/balloon.png'></img></td><td><b>Check the surface of the planet</b> <br><i>(click on the left pane)</i></td></tr></table>" +
+        "<b>Or</b><br>" +
+        "<table align='center'><tr><td><img height='100px' src='img/sprite/merchant.png'></img></td><td><b>Uncover part of the map</b><br><i>(click on the right pane)</i></td></tr></table><br><br>",
+    ];
+
+    var digLabel =
+      "<b>DIG FOR TREASURE</b> <br> I trust the map. <br> (costs -" +
+      currency +
+      numberWithCommas(digDec) +
+      ")";
+    var dig_button =
+      '<button id="jspsych-darkroom-dig-btn" class="jspsych-btn" style="margin:30px; background-color:green; color:white">' +
+      digLabel +
+      "</button>";
+
+    var noDigLabel =
+      "<b>TRY ANOTHER PLANET</b> <br> I do not trust the map. <br>(costs -" +
+      currency +
+      numberWithCommas(noDigDec) +
+      ")";
+    var nodig_button =
+      '<button id="jspsych-darkroom-nodig-btn" class="jspsych-btn" style="margin:30px; background-color:red; color:white">' +
+      noDigLabel +
+      "</button>";
+
+    var instr3 = [
+      "Another thing: it takes money to make money.<br>" +
+        "So every action you take will decrease your money.<br>" +
+        "It's actually quite difficult to make a profit, <br>and you will need to carefully balance your exploration decisions.<br>" +
+        "<br><br>There are two <b>FINAL</b> actions you can take when you are done EXPLORING:<br><br>" +
+        "<table align='center'><tr><td>" +
+        dig_button +
+        "</td></tr></table>" +
+        "<b>Or</b><br>" +
+        "<table align='center'><tr><td>" +
+        nodig_button +
+        "</td></tr></table><br>" +
+        "Selecting these FINAL actions ends your EXPLORATION of the planet and will soon take you to another planet. <br>If you chose to Dig for Treasure and the map was correct, you will receive your reward.<br><br>",
+    ];
+
+    var instr4 = [
+      "You will be presented with two panes:<br>" +
+        "<img border-width='1pt' border='solid' border-color='black' src='img/sprite/demomap1.png' height='400px'></img><br>" +
+        "Clicking on squares in the left pane costs " +
+        currency +
+        numberWithCommas(pDec) +
+        " and takes a couple of seconds to take you on location and reveal a type of land:<br>" +
+        "<table align='center'><tr><td>Grass</td><td>Sand</td><td>Water</td></tr><tr><td><img src='img/map/m0/map3.png' height='60px'></img></td><td><img src='img/map/m0/map2.png'height='60px'></img></td><td><img src='img/map/m0/map1.png'height='60px'></img></td></tr></table>",
+    ];
+
+    var instr5 = [
+      "You will be presented with two panes:<br>" +
+        "<img border-width='1pt' border='solid' border-color='black' src='img/sprite/demomap2.png' height='400px'></img><br>" +
+        "Clicking on squares in the right pane costs " +
+        currency +
+        numberWithCommas(sDec) +
+        " and quickly reveals some alien symbols:<br>" +
+        "<table align='center'><tr><td>Glorb</td><td>Dran</td><td>Teekr</td><td>Doda</td><td>Wiff</td><td>Shloo</td><td>Fuft</td><td>Zudon</td><td>Polkr</td></tr><tr><td><img src='img/map/m5/map3.png' height='60px'></img></td><td><img src='img/map/m5/map2.png'height='60px'></img></td><td><img src='img/map/m5/map1.png'height='60px'></img></td><td><img src='img/map/m5/map6.png' height='60px'></img></td><td><img src='img/map/m5/map5.png'height='60px'></img></td><td><img src='img/map/m5/map4.png'height='60px'></img></td><td><img src='img/map/m5/map9.png' height='60px'></img></td><td><img src='img/map/m5/map8.png'height='60px'></img></td><td><img src='img/map/m5/map7.png'height='60px'></img></td></tr></table>",
+    ];
+
+    var instr6 = [
+      "<div style='font-size:32px'>About the Maps<br><br></div>" +
+        "<div>Sometimes the informant's map is correct. Like this:<br>" +
+        "<img src='img/sprite/rightmap.png' width='800px'></img></div>" +
+        "<br><br>",
+    ];
+
+    var instr7 = [
+      "<div style='font-size:32px'>About the Maps<br><br></div>" +
+        "<div>But sometimes the alien map is just not at all relevant <br>to the area you are exploring. Like this:<br>" +
+        "<img src='img/sprite/wrongmap.png' width='800px'></img></div>" +
+        "If the map is wrong you'd better choose<br>" +
+        nodig_button +
+        "<br>because digging for treasure will just waste your money.<br><br>",
+    ];
+
+    var instr8 = [
+      "<div style='font-size:32px'>About the Maps<br><br></div>" +
+        "<div>If you can determine that the map is correct, then choose<br>" +
+        dig_button +
+        "<br>to receive a reward.<br><br>" +
+        "<img src='img/sprite/richesmap.png' width='800px'></img></div>" +
+        "<br><br>",
+    ];
+
+    var instr9 = [
+      "The game is about to begin.<br> You will start with " +
+        currency +
+        "100,000.<br> Your goal is to reach a total of " +
+        currency +
+        "200,000. <br><br> Click NEXT to begin.<br><br>",
+    ];
+
+    var seed1 = [
+      [0.583631, 0.583631],
+      [0.981639, 0.246835],
+      [0.147354, 0.147354],
+      [0.126442, 0.126442],
+      [0.054358, 0.064358],
+      [0.813834, 0.838225],
+    ];
+
+    var revLo0 = [
+      [2, 1],
+      [5, 1],
+      [3, 4],
+    ];
+    var targLo0 = [
+      [1, 4],
+      [4, 5],
+      [1, 3],
+    ];
+    var mtargLo0 = [
+      [1, 4],
+      [4, 5],
+      [4, 4],
+    ];
+
+    var revLo1 = [
+      [1, 0],
+      [5, 5],
+      [1, 4],
+      [3, 4],
+      [5, 1],
+      [0, 2],
+    ];
+    var targLo1 = [
+      [1, 5],
+      [0, 2],
+      [4, 1],
+      [5, 2],
+      [2, 6],
+      [4, 5],
+    ];
+    var mtargLo1 = [
+      [1, 5],
+      [2, 6],
+      [4, 1],
+      [5, 2],
+      [6, 5],
+      [1, 3],
+    ];
+
+    // var stims1 = [{stimulus: true, seed:seed1[0],revealLoc:revLo1[0],targetLoc:targLo1[0],mtargetLoc:mtargLo1[0]},{stimulus: false, seed:seed1[1],revealLoc:revLo1[1],targetLoc:targLo1[1],mtargetLoc:mtargLo1[1]},{stimulus: true, seed:seed1[2],revealLoc:revLo1[2],targetLoc:targLo1[2],mtargetLoc:mtargLo1[2]},{stimulus:true, seed:seed1[3],revealLoc:revLo1[3],targetLoc:targLo1[3],mtargetLoc:mtargLo1[3]},{stimulus: false, seed:seed1[4],revealLoc:revLo1[4],targetLoc:targLo1[4],mtargetLoc:mtargLo1[4]},{stimulus:false, seed:seed1[5],revealLoc:revLo1[5],targetLoc:targLo1[5],mtargetLoc:mtargLo1[5]}]
+    var stims = [
+      { stimulus: true },
+      { stimulus: false },
+      { stimulus: true },
+      { stimulus: false },
+      { stimulus: true },
+      { stimulus: false },
+    ];
+
+    var consent_block = {
+      type: jsPsychInstructions,
+      pages: [invitation, consentForm, consentVoluntary], //invitation,consentForm,consentVoluntary,
+      //key_forward: ['spacebar'],
+      show_clickable_nav: true,
+      //allow_backward: false,
+      timing_post_trial: transitionDelay,
+    };
+
+    var instructions1_block = {
+      type: jsPsychInstructions,
+      pages: [
+        instr1,
+        instr2,
+        instr3,
+        instr4,
+        instr5,
+        instr6,
+        instr8,
+        instr7,
+        instr9,
+      ],
+      show_clickable_nav: true,
+      //allow_backward: false,
+      timing_post_trial: transitionDelay,
+    };
+
+    var test_block = {
+      type: jsPsychForageSurrogateSingle,
+      timeline: stims,
+      room_height: 280,
+      room_width: 280,
+      Xgrid: 3,
+      Ygrid: 3,
+      maxTranslation: maxTrans,
+      maxPrize: reward,
+      digDec: digDec,
+      sellMap: false,
+      mapReward: 5,
+      revealSize: 0,
+      primaryDec: pDec,
+      surrogateDec: sDec,
+      decrementMapVal: false,
+      mapDir: mapDir,
+      timing_post_trial: transitionDelay,
+      randomize_order: true,
+      exploreDelay: explDelay,
+      exploreDelayMap: explDelayMap,
+      degreesFree: 0,
+      currency: currency,
+    };
+
+    var debrief_block = {
+      type: jsPsychInstructions,
+      pages: debrief,
+      allow_backward: false,
+      show_clickable_nav: true,
+      timing_post_trial: transitionDelay,
+      on_finish: function (data) {
+        var time_foo = new Date();
+        var experiment_time = time_foo.getTime();
+        jsPsych.data.addProperties({ turkID: mTurkID });
+        //jsPsych.data.addProperties({sonaID: SONAID});
+        jsPsych.data.addProperties({ ExpEndTime: experiment_time });
+        saveData(
+          expName + "_ID" + mTurkID + "_T" + experiment_time + ".csv",
+          jsPsych.data.get().csv()
+        );
+        //saveData(expName + '_ID' + SONAID + '_T' + experiment_time + '.csv', jsPsych.data.get().csv());
+        //if (mTurkID != "" && uniqueSubject == true){
+        //    participantList.push(mTurkID);
+        //    saveParticipants(participantFileName, participantList.join(","))};
+      },
+    };
+
+    var final_block = {
+      type: jsPsychInstructions,
+      pages: secretCode,
+      timing_post_trial: transitionDelay,
+    };
+
+    var repeatSubject_block = {
+      type: jsPsychInstructions,
+      pages: repeatSubject,
+      timing_post_trial: transitionDelay,
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* DEFINE EXPERIMENT TIMELINE */
+    var timeline = [];
+    timeline.push(consent_block);
+    timeline.push(instructions1_block);
+    timeline.push(test_block);
+    timeline.push(debrief_block);
+    timeline.push(final_block);
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /* START EXPERIMENT*/
+    // jsPsych.init({
+    //   timeline: timeline,
+    //   on_finish: function () {
+    //     jsPsych.data.displayData();
+    //   },
+    // });
+
+    jsPsych.run(timeline)
+  </script>
+</html>
