@@ -3,20 +3,10 @@ plotClixAnimate<-function(.data){
   #NOTE!! THe plot window must be set so the sqare length and width are even. Viewer windo w:h is 2 to 1.1 ish
   
   require(gridExtra)
-  require('ggimage')
-  require(png)
-  source('readData.R')
-  source('parseMapList.R')
-  source('parseClix.R')
-  source('parseReveal.R')
-  source('parseTarg.R')
-  
-  require(gridExtra)
   require(ggimage)
   require(png)
-  source('parseMapList.R')
+
   source('parseClix.R')
-  #source('parseReveal.R')
   source('parseTarg.R')
   
   main<-getwd()
@@ -49,7 +39,9 @@ plotClixAnimate<-function(.data){
     
     dir.create(file.path(animDir, subjDir), showWarnings = FALSE)
     dir.create(file.path(animDir, subjDir,triDir), showWarnings = FALSE)
-    setwd(file.path(animDir, subjDir,triDir))
+    mypath <- file.path(animDir, subjDir,triDir)
+    print(mypath)
+    setwd(mypath)
     for (i in 1:nrow(clx)){
       
       clx_trunc <- clx[1:i,]

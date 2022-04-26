@@ -8,18 +8,13 @@ require(ggplot2)
 source('readData.R')
 source('parseMapList.R')
 source('parseClix.R')
-#source('parseReveal.R')
 source('parseTarg.R')
 source('plotClix.R')
-
 source('plotClixAnimate.R')
 
 data<- readData()
 data$stimSize[data$trial_type == "darkroom-dig"] <- 3
 data<- subset(data,select = -c(revealLoc, revealSize))
-
-
-
 data <- data %>% distinct(.,turkID, trial_index,.keep_all = TRUE )
 
 stim_def <- data[data$seedArray!="",] %>% select(seedArray) %>% {distinct(.)} %>% left_join(distinct(data, seedArray, .keep_all = T)) %>% select(seedArray,sTarg,mTarg,mapList,exploreDelay,stimSize)
